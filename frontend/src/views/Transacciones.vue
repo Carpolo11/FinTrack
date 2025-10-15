@@ -8,7 +8,11 @@
     <main class="main-content">
       <div class="card-container">
         <TransactionForm @registrar="agregarTransaccion" />
-        <TransactionList :transacciones="transacciones" />
+        <TransactionList
+          :transacciones="transacciones"
+          @eliminar="eliminarTransaccion"
+          @editar="editarTransaccion"
+        />
       </div>
     </main>
   </section>
@@ -22,35 +26,49 @@ import TransactionList from '../components/transactions/TransactionList.vue'
 const transacciones = ref([])
 
 function agregarTransaccion(t) {
-  transacciones.value.push(t)
+  // Si es edición, actualiza
+  const index = transacciones.value.findIndex(tx => tx.id === t.id)
+  if (index !== -1) {
+    transacciones.value[index] = t
+  } else {
+    t.id = Date.now()
+    transacciones.value.push(t)
+  }
+}
+
+function eliminarTransaccion(id) {
+  transacciones.value = transacciones.value.filter(tx => tx.id !== id)
+}
+
+function editarTransaccion(transaccion) {
+  // Enviar evento al formulario (reactivo)
+  window.dispatchEvent(new CustomEvent('editar-transaccion', { detail: transaccion }))
 }
 </script>
 
 <style scoped>
 .transacciones-page {
-  height: 100vh; 
-  overflow: hidden; 
+  height: 100vh;
+  overflow: hidden;
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #a5b4fc 100%);
   color: #f9fafb;
   font-family: "Poppins", system-ui, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   padding: 1rem;
-  box-sizing: border-box;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 1.2rem; 
-  animation: fadeIn 1s ease-out;
+  margin-bottom: 1rem;
 }
 
 .header h1 {
-  font-size: 2.3rem;
+  font-size: 2.4rem;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
 .header p {
@@ -58,46 +76,24 @@ function agregarTransaccion(t) {
   color: #e0e7ff;
 }
 
-.main-content {
-  width: 100%;
-  max-width: 850px; 
-  display: flex;
-  justify-content: center;
-}
-
 .card-container {
   background: white;
   border-radius: 18px;
-  padding: 1.8rem 2rem; 
+  padding: 1.8rem 2rem;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  animation: slideUp 1s ease;
+  gap: 2rem;
+  animation: fadeIn 1s ease;
+  max-width: 950px;
   width: 100%;
-  max-height: 72vh; 
-  overflow-y: auto; 
-}
-
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 1.8rem;
-  }
-
-  .card-container {
-    padding: 1.5rem;
-    max-height: 75vh;
-  }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
+  max-height: 78vh;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
