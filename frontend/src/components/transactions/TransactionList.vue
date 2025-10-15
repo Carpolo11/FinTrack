@@ -1,14 +1,22 @@
 <template>
-  <div v-if="transacciones.length" class="transaction-list">
-    <h3>Historial de Transacciones</h3>
-    <ul>
-      <li v-for="(t, i) in transacciones" :key="i">
-        <span>{{ t.fecha }}</span>
-        <strong>${{ t.monto.toFixed(2) }}</strong>
+  <div class="transaction-list">
+    <h3>📜 Historial de Transacciones</h3>
+
+    <p v-if="!transacciones.length" class="no-data">
+      No hay transacciones registradas.
+    </p>
+
+    <ul v-else>
+      <li v-for="(t, i) in transacciones" :key="i" class="card">
+        <div>
+          <strong>Fecha:</strong> {{ t.fecha }}
+        </div>
+        <div class="monto">
+          <strong>Monto:</strong> ${{ t.monto.toFixed(2) }}
+        </div>
       </li>
     </ul>
   </div>
-  <p v-else class="no-data">No hay transacciones registradas aún.</p>
 </template>
 
 <script setup>
@@ -19,24 +27,46 @@ defineProps({
 
 <style scoped>
 .transaction-list {
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 400px;
+  margin-top: 2.5rem;
 }
+
+h3 {
+  color: #4f46e5;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.no-data {
+  color: #9ca3af;
+  font-style: italic;
+}
+
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
-li {
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
   display: flex;
   justify-content: space-between;
-  background: #f4f4f4;
-  padding: 0.8rem;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.no-data {
-  margin-top: 1.5rem;
-  color: gray;
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15);
+}
+
+.monto {
+  color: #16a34a;
+  font-weight: 600;
 }
 </style>
