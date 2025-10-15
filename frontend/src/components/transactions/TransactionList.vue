@@ -1,18 +1,16 @@
 <template>
   <div class="transaction-list">
-    <h3>📜 Historial de Transacciones</h3>
+    <h2>📜 Historial de Transacciones</h2>
 
     <p v-if="!transacciones.length" class="no-data">
-      No hay transacciones registradas.
+      Aún no hay transacciones registradas. 🌱
     </p>
 
     <ul v-else>
       <li v-for="(t, i) in transacciones" :key="i" class="card">
-        <div>
-          <strong>Fecha:</strong> {{ t.fecha }}
-        </div>
-        <div class="monto">
-          <strong>Monto:</strong> ${{ t.monto.toFixed(2) }}
+        <div class="info">
+          <span class="fecha">{{ t.fecha }}</span>
+          <span class="monto">${{ t.monto.toFixed(2) }}</span>
         </div>
       </li>
     </ul>
@@ -27,17 +25,19 @@ defineProps({
 
 <style scoped>
 .transaction-list {
-  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
 }
 
-h3 {
-  color: #4f46e5;
-  font-weight: 600;
-  margin-bottom: 1rem;
+h2 {
+  color: #4338ca;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
 }
 
 .no-data {
-  color: #9ca3af;
+  color: #6b7280;
   font-style: italic;
 }
 
@@ -48,25 +48,35 @@ ul {
 }
 
 .card {
-  background: white;
-  border-radius: 10px;
-  padding: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.25);
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.fecha {
+  color: #374151;
 }
 
 .monto {
   color: #16a34a;
-  font-weight: 600;
+  font-weight: 700;
 }
 </style>
