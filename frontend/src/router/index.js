@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginApp from '../views/LoginApp.vue'
 import Registro from '../views/Registro.vue' // ✅ Importamos la vista de registro
+import Transacciones from '../views/Transacciones.vue'
 
 const routes = [
   {
@@ -16,7 +17,14 @@ const routes = [
   {
     path: '/',
     redirect: '/login' // Redirige a login por defecto
-  }
+  },
+
+  {
+  path: '/transacciones',
+  name: 'Transacciones',
+  component: Transacciones
+ 
+  } 
 ]
 
 const router = createRouter({
